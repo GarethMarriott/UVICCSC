@@ -208,14 +208,16 @@ public class IntegerLinkedList implements IntegerList
 		if (pos == 0) {
 			head = p.next;
 			p.next.prev = null;
-		}else if (pos == count) {
+		}else if (pos == count-1) {
 			tail = p.prev;
 			p.prev.next = null;
 		}
 		else {
-		p.prev.next = p.next;
-		p.next.prev = p.prev;
+			IntegerNode h = p;
+			p.prev.next = p.next;
+			h.next.prev = p.prev;
 		}
+		count--;
 	}
 
 	/*
