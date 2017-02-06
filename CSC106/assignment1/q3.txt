@@ -1,0 +1,60 @@
+Part 1: Conversion decimal to binary.
+For each of the numbers below, replace the string of all zeros (000000) with the 6-bit unsigned binary encoding of the given number.
+A)	1
+000001
+B)	5
+000101
+C)	15
+001111
+D)	20
+010100
+E)	35
+100011
+Part 2: Conversion binary to decimal
+For each of the 6-bit unsigned binary numbers below, replace the 0 on the line below with the decimal encoding.
+F) 000010
+2
+G) 001100
+12
+H) 101010
+42
+I) 001010
+10
+J) 011111
+31
+Part 3: Conversion hexadecimal to decimal
+For each of the unsigned hexadecimal numbers below, replace the 0 on the line below with the decimal encoding.
+F) 0aa
+170
+G) 010
+16
+H) 0ff
+255
+I) abc
+2748
+J) 123
+291
+Part 4: Conversion decimal to two's complement
+For each of the decimal numbers below, replace the 000000 on the line below with the 6-bit two's complement encoding.
+F) -10
+110110
+G) 10
+001010
+H) 12
+001100
+I) -15
+110001
+J) -8
+111000
+Part 5: Conversion two's complement to decimal
+For each of the 6-bit two's complement numbers below, replace the 0 on the line below  with the decimal encoding.
+F) 100010
+-30
+G) 111111
+-1
+H) 100000
+-32
+I) 111101
+-3
+J) 110010
+-14

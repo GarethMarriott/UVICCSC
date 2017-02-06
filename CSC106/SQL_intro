@@ -1,0 +1,24 @@
+
+ /*
+
+How to Query in SQL:
+
+keywords-> ***
+***Select "a column"  //can be multiples  // Select *
+***from "a table"
+
+***Distinct  // used with select to get only one copy of each
+
+***Where // limiting factor // used after from keyword
+***and // can be used with where
+
+***Order by // after Where keyword
+
+Input value = input: name_in
+
+
+
+
+
+
+ */

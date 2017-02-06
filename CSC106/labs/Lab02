@@ -1,0 +1,13 @@
+Pseudocode
+task: Select name , title from characters where human = 1 and year < 1960
+
+i = 0
+while i < # of rows in characters table
+
+  column = i
+  if (Human = 1 and year < 1960)
+    print name
+    print title
+    print new line
+
+  i = i + 1
