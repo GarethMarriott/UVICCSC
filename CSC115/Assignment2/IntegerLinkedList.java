@@ -180,6 +180,14 @@ public class IntegerLinkedList implements IntegerList
 	 */
 	public void remove (int value)
 	{
+		IntegerNode r = head;
+		for (int i = 0; i < count; i++) {
+			if (r.value == value) {
+				removeAt(i);
+				i--;
+			}
+			r = r.next;
+		}
 	}
 
 	/*
@@ -207,7 +215,7 @@ public class IntegerLinkedList implements IntegerList
 		}
 		if (pos == 0) {
 			head = p.next;
-			p.next.prev = null;
+			p.prev = null;
 		}else if (pos == count-1) {
 			tail = p.prev;
 			p.prev.next = null;
