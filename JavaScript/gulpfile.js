@@ -2,5 +2,13 @@ const gulp = require('gulp');
 // Gulp dependencies go here
 
 gulp.task('default', function() {
-	//Gulp tasks go here
+	//Node source goes here
+
+	gulp.src("es6/**/*.js")
+		.pipe(babel())
+		.pipe(gulp.dest("dist"));
+	//browser source
+	gulp.src("public/es6/**/*.js")
+		.pipe(babel())
+		.pipe(gulp.dest("public/dest"));
 });
