@@ -3,23 +3,25 @@
 # by a newline character
 def printStars(num_stars):
 	for i in range(0,num_stars):
-		print "*",
+		print"*",
 	print
 
 def printSquare(width):
-	print "printSquare not implemented yet"
+	for i in range(width):
+		printStars(width)
 
 def printTriangle(width):
-	print "printTriangle not implemented yet"
+	for i in range(width):
+		printStars(i+1)
 
-def printTriangleRecursive(cur_width,width):	
-	print "printTriangleRecursive not implemented yet"
+def printTriangleRecursive(cur_width,width):
+	if cur_width<width:
+		printTriangleRecursive(cur_width+1,width)
+	printStars(width - cur_width + 1)
 
 
 def printFlippedTriangle(width):
-	print "printFlippedTriangle not implemented yet"
-
-
-
-
-
+	for i in range(width):
+		for j in range(width-i-1):
+			print " ",
+		printStars(i+1)

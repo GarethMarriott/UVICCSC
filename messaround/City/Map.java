@@ -14,7 +14,7 @@ public class Map{
 				if (rawIn == 0) {
 					map[i][j] = new NotRoad();
 				}else if (rawIn == 1) {
-					map[i][j] = new Road();
+					map[i][j] = new TwoWayRoad("NS" , 2 , 2);
 				}else if (rawIn == 2) {
 					map[i][j] = new StopLight();
 				}else {

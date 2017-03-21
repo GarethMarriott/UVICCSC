@@ -8,4 +8,7 @@ public class Tile{
   public String toString(){
     return "T";
   }
+  public String getDirection(){
+    return "NOTROAD";
+  }
 }

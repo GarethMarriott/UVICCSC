@@ -12,14 +12,38 @@ def getCharForNum(num):
 
 
 def encryptString(mystr,shift):
-	newStr = "encrypt not implemented"
-	return newStr
+	length = len(mystr)
+	encr = []
+
+	for i in range(0,length):
+		if (getNumForChar(mystr[i])+shift) < 26:
+			temp = getNumForChar(mystr[i])+shift
+		else:
+			temp = getNumForChar(mystr[i])+shift-26
+
+		encr[:0] = getCharForNum(temp)
+
+	out = ""
+
+	for j in range(0,length):
+		out = out + encr.pop()
+	return out
 
 def decryptString(mystr,shift):
-	newStr = "decrypt not implemented yet"
-	return newStr
 
+	length = len(mystr)
+	encr = []
 
+	for i in range(0,length):
+		if (getNumForChar(mystr[i])-shift) > -1:
+			temp = getNumForChar(mystr[i])-shift
+		else:
+			temp = getNumForChar(mystr[i])-shift+26
 
+		encr[:0] = getCharForNum(temp)
 
+	out = ""
 
+	for j in range(0,length):
+		out = out + encr.pop()
+	return out
