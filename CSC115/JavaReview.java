@@ -30,6 +30,15 @@ MIDTERM 1  ******
 
 
 
+  Big O notation
+
+  let f(n) and g(n) be functions mapping integers to real numbers.
+
+  we say f(n) is O(g(n)) if there is a real constant C and an integer
+  n0 > 1 such that f(n) < Cg(n) , n>=n0
+
+
+
 
 */
 
