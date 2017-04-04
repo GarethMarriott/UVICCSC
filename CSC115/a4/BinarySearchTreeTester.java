@@ -111,15 +111,15 @@ public class BinarySearchTreeTester {
          * http://blog.taragana.com/index.php/archive/core-java-how-to-
          *  get-java-source-code-line-number-file-name-in-code/
          *
-         * Once we've discussed Exceptions in more detail this won't 
+         * Once we've discussed Exceptions in more detail this won't
          *  be required.
          */
         if (passed) {
             System.out.println ("Passed test: " + testCount);
         }
         else {
-            System.out.println ("Failed test: " + testCount 
-                + " at line " 
+            System.out.println ("Failed test: " + testCount
+                + " at line "
                 + Thread.currentThread().getStackTrace()[2].getLineNumber()
             );
             System.exit(1);
@@ -128,7 +128,7 @@ public class BinarySearchTreeTester {
     }
 
 
-    static void add_key_values (BinarySearchTree<String, Integer> t, 
+    static void add_key_values (BinarySearchTree<String, Integer> t,
         String keys[], int[] values, int count)
     {
         for (int i = 0; i < count; i++)
@@ -136,7 +136,7 @@ public class BinarySearchTreeTester {
     }
 
 
-    static boolean compare_lists (String[] key_expected, 
+    static boolean compare_lists (String[] key_expected,
         int[] value_expected, int count, List<Entry<String, Integer> > l)
     {
         Iterator<Entry<String,Integer> > i = l.iterator();
@@ -146,7 +146,7 @@ public class BinarySearchTreeTester {
         while (!failed && i.hasNext()) {
             Entry<String,Integer> e = i.next();
 
-            if (!e.getKey().equals(key_expected[pos]) || 
+            if (!e.getKey().equals(key_expected[pos]) ||
                 !e.getValue().equals(value_expected[pos]))
             {
                 failed = true;
@@ -160,7 +160,7 @@ public class BinarySearchTreeTester {
 
     static void tree1_test() {
         System.out.println("**** begin insert traversals tree 1");
-        BinarySearchTree<String, Integer> t 
+        BinarySearchTree<String, Integer> t
             = new BinarySearchTree<String, Integer> ();
         add_key_values(t,tree1_keys, tree1_values, tree1_to_add);
 
@@ -183,28 +183,28 @@ public class BinarySearchTreeTester {
         List <Entry<String,Integer> > l = t.entryList();
         displayResults(tree1_size == l.size());
         displayResults(
-            compare_lists (tree1_keys_levelorder, 
+            compare_lists (tree1_keys_levelorder,
                 tree1_values_levelorder, tree1_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_PREORDER);
         displayResults(tree1_size == l.size());
         displayResults(
-            compare_lists (tree1_keys_preorder, tree1_values_preorder, 
+            compare_lists (tree1_keys_preorder, tree1_values_preorder,
                 tree1_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_POSTORDER);
         displayResults(tree1_size == l.size());
         displayResults(
-            compare_lists (tree1_keys_postorder, tree1_values_postorder, 
+            compare_lists (tree1_keys_postorder, tree1_values_postorder,
                 tree1_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_INORDER);
         displayResults(tree1_size == l.size());
         displayResults(
-            compare_lists (tree1_keys_inorder, tree1_values_inorder, 
+            compare_lists (tree1_keys_inorder, tree1_values_inorder,
                 tree1_size, l)
         );
 
@@ -216,7 +216,7 @@ public class BinarySearchTreeTester {
     public static void tree2_test() {
         System.out.println("**** begin insert traversals tree 2");
 
-        BinarySearchTree<String, Integer> t 
+        BinarySearchTree<String, Integer> t
             = new BinarySearchTree<String, Integer> ();
         add_key_values(t,tree2_keys, tree2_values, tree2_to_add);
 
@@ -236,28 +236,28 @@ public class BinarySearchTreeTester {
         List <Entry<String,Integer> > l = t.entryList();
         displayResults(tree2_size == l.size());
         displayResults(
-            compare_lists (tree2_keys_levelorder, tree2_values_levelorder, 
+            compare_lists (tree2_keys_levelorder, tree2_values_levelorder,
                 tree2_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_PREORDER);
         displayResults(tree2_size == l.size());
         displayResults(
-            compare_lists (tree2_keys_preorder, tree2_values_preorder, 
+            compare_lists (tree2_keys_preorder, tree2_values_preorder,
                 tree2_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_POSTORDER);
         displayResults(tree2_size == l.size());
         displayResults(
-           compare_lists (tree2_keys_postorder, tree2_values_postorder, 
+           compare_lists (tree2_keys_postorder, tree2_values_postorder,
                tree2_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_INORDER);
         displayResults(tree2_size == l.size());
         displayResults(
-            compare_lists (tree2_keys_inorder, tree2_values_inorder, 
+            compare_lists (tree2_keys_inorder, tree2_values_inorder,
                 tree2_size, l)
         );
 
@@ -268,7 +268,7 @@ public class BinarySearchTreeTester {
     static void tree3_test() {
         System.out.println("**** begin insert traversals tree 3");
 
-        BinarySearchTree<String, Integer> t 
+        BinarySearchTree<String, Integer> t
             = new BinarySearchTree<String, Integer> ();
         add_key_values(t,tree3_keys, tree3_values, tree3_to_add);
 
@@ -289,28 +289,28 @@ public class BinarySearchTreeTester {
              */
 
         displayResults(
-            compare_lists (tree3_keys_levelorder, tree3_values_levelorder, 
+            compare_lists (tree3_keys_levelorder, tree3_values_levelorder,
             tree3_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_PREORDER);
         displayResults(tree3_size == l.size());
         displayResults(
-            compare_lists (tree3_keys_preorder, tree3_values_preorder, 
+            compare_lists (tree3_keys_preorder, tree3_values_preorder,
                 tree3_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_POSTORDER);
         displayResults(tree3_size == l.size());
         displayResults(
-            compare_lists (tree3_keys_postorder, tree3_values_postorder, 
+            compare_lists (tree3_keys_postorder, tree3_values_postorder,
                 tree3_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_INORDER);
         displayResults(tree3_size == l.size());
         displayResults(
-            compare_lists (tree3_keys_inorder, tree3_values_inorder, 
+            compare_lists (tree3_keys_inorder, tree3_values_inorder,
                 tree3_size, l)
         );
 
@@ -321,7 +321,7 @@ public class BinarySearchTreeTester {
     static void tree4_test() {
         System.out.println("**** begin insert traversals tree 4");
 
-        BinarySearchTree<String, Integer> t 
+        BinarySearchTree<String, Integer> t
             = new BinarySearchTree<String, Integer> ();
         add_key_values(t,tree4_keys, tree4_values, tree4_to_add);
 
@@ -342,28 +342,28 @@ public class BinarySearchTreeTester {
         List <Entry<String,Integer> > l = t.entryList();
         displayResults(tree4_size == l.size());
         displayResults(
-            compare_lists (tree4_keys_levelorder, tree4_values_levelorder, 
+            compare_lists (tree4_keys_levelorder, tree4_values_levelorder,
                 tree4_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_PREORDER);
         displayResults(tree4_size == l.size());
         displayResults(
-            compare_lists (tree4_keys_preorder, tree4_values_preorder, 
+            compare_lists (tree4_keys_preorder, tree4_values_preorder,
                 tree4_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_POSTORDER);
         displayResults(tree4_size == l.size());
         displayResults(
-            compare_lists (tree4_keys_postorder, tree4_values_postorder, 
+            compare_lists (tree4_keys_postorder, tree4_values_postorder,
                 tree4_size, l)
         );
 
         l = t.entryList(BinarySearchTree.BST_INORDER);
         displayResults(tree4_size == l.size());
         displayResults(
-            compare_lists (tree4_keys_inorder, tree4_values_inorder, 
+            compare_lists (tree4_keys_inorder, tree4_values_inorder,
                 tree4_size, l)
         );
 
@@ -372,7 +372,7 @@ public class BinarySearchTreeTester {
 
     static void test_insert_size_height() {
         System.out.println("**** begin insert size height");
-        BinarySearchTree<String,String> t 
+        BinarySearchTree<String,String> t
             = new BinarySearchTree<String,String>();
 
         displayResults(t.height() == 0);
@@ -391,13 +391,14 @@ public class BinarySearchTreeTester {
 
     static void test_insert_find()  {
         System.out.println("**** begin insert find");
-        BinarySearchTree<String,String> t 
+        BinarySearchTree<String,String> t
             = new BinarySearchTree<String,String>();
 
         t.insert("bob", "bobdata");
         t.insert("joe", "joedata");
         t.insert("jane", "janedata");
-
+        // TreeView treegmar = new TreeView(t);
+        // treegmar.dotPrint();
         try {
             String s = t.find("bob");
             displayResults( s.equals("bobdata"));
@@ -415,6 +416,7 @@ public class BinarySearchTreeTester {
         }
 
         t.insert("bob", "newbobdata");
+
         try {
             String s = t.find("bob");
             displayResults(s.equals("newbobdata"));
@@ -424,7 +426,9 @@ public class BinarySearchTreeTester {
         }
 
         t.insert("wilma","datawilma");
+
         t.insert("candy","datacandy");
+
         try {
             String s = t.find("wilma");
             String q = t.find("candy");
@@ -453,6 +457,7 @@ public class BinarySearchTreeTester {
             tree4_test();
         }
         catch (Exception e) {
+          e.printStackTrace();
             System.out.println("Unhandled exception in tester: " + e);
         }
      }

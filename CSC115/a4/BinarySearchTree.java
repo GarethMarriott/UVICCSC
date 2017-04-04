@@ -60,6 +60,43 @@ class BinarySearchTree <K extends Comparable<K>, V>  {
 	// 	the tree is a valid binary search tree
 	//
 	public void insert (K k, V v) {
+		if (this.size() == 0) {
+			BSTNode newNode = new BSTNode<K , V>(k,v);
+			root = newNode;
+			count++;
+		}else if (root.key.compareTo(k)==0) {
+			root.value = v;
+		}else {
+			doInsert(k , v , root);
+		}
+		// TreeView t = new TreeView(this);
+		// t.dotPrint();
+
+	}
+
+	private void doInsert(K k, V v, BSTNode<K,V> n){
+		//System.out.println(n);
+		insertLoops++;
+		if (n.key.compareTo(k)==0) {
+			n.value = v;
+		}else if (n.key.compareTo(k)>0) {
+			if (n.left == null) {
+				BSTNode newNode = new BSTNode<K , V>(k,v);
+				n.left = newNode;
+				count++;
+			}else{
+				doInsert(k , v , n.left);
+			}
+		}else{
+			if (n.right == null) {
+				BSTNode newNode = new BSTNode<K , V>(k,v);
+				n.right = newNode;
+				count++;
+			}else{
+				doInsert(k , v , n.right);
+			}
+		}
+
 	}
 
 	//
@@ -78,7 +115,37 @@ class BinarySearchTree <K extends Comparable<K>, V>  {
 	//	KeyNotFoundException if key isn't in the tree
 	//
 	public V find (K key) throws KeyNotFoundException {
-		throw new KeyNotFoundException();
+		if (root != null) {
+			if (root.key.compareTo(key) == 0) {
+				return root.value;
+			}else {
+				return doFind(key , root);
+			}
+		}else {
+			throw new KeyNotFoundException();
+		}
+	}
+
+	private V doFind(K key , BSTNode<K,V> n) throws KeyNotFoundException{
+		findLoops++;
+		if (n.key.compareTo(key) == 0) {
+			return n.value;
+
+		}else if (n.key.compareTo(key)>0){
+
+			if (n.left == null) {
+				throw new KeyNotFoundException();
+			}else{
+				return doFind(key , n.left);
+			}
+
+		}else{
+			if (n.right == null) {
+				throw new KeyNotFoundException();
+			}else {
+				return doFind(key , n.right);
+			}
+		}
 	}
 
 	//
@@ -89,7 +156,8 @@ class BinarySearchTree <K extends Comparable<K>, V>  {
 	// Returns:
 	//	the number of nodes in the tree.
 	public int size() {
-		return -1;
+		//System.out.println(count);
+		return count;
 	}
 
 	//
@@ -97,6 +165,8 @@ class BinarySearchTree <K extends Comparable<K>, V>  {
 	//	Remove all nodes from the tree.
 	//
 	public void clear() {
+		count = 0;
+		root = null;
 	}
 
 	//
@@ -113,7 +183,31 @@ class BinarySearchTree <K extends Comparable<K>, V>  {
 	//	examples of height.
 	//
 	public int height() {
-		return -1;
+
+		if (count == 0 || count == 1) {
+			return count;
+		}else{
+			return doHeight(root);
+		}
+
+
+	}
+
+	private int doHeight(BSTNode<K,V> n){
+		int left = 0;
+		int right = 0;
+		int height = 0;
+		if (n.left != null) {
+			left = doHeight(n.left);
+		}
+		if (n.right != null) {
+			right = doHeight(n.right);
+		}
+		if (left >= right) {
+			return left+1;
+		}else {
+			return right+1;
+		}
 	}
 
 	//
@@ -142,15 +236,73 @@ class BinarySearchTree <K extends Comparable<K>, V>  {
 	// only the removeFirst() and addLast() methods.
 	//
 	public List<Entry<K,V>> entryList() {
+
 		List<Entry<K, V>> 			l = new LinkedList<Entry<K,V> >();
+
+		LinkedList<BSTNode<K,V>> nodes = new LinkedList<BSTNode<K,V> >();
+		nodes.addLast(root);
+		while (!(nodes.isEmpty())) {
+			BSTNode<K,V> cur = nodes.removeFirst();
+			l.add(new Entry<K,V>(cur.key, cur.value));
+			if (cur.left != null) {
+				nodes.addLast(cur.left);
+			}
+			if (cur.right != null) {
+				nodes.addLast(cur.right);
+			}
+		}
+
 		return l;
+	}
+
+	private void doInOrder(BSTNode<K,V> n , List <Entry<K,V> > l){
+
+		if (n.left != null) {
+			doInOrder(n.left , l);
+		}
+
+		l.add(new Entry<K,V>(n.key , n.value));
+
+		if (n.right != null) {
+			doInOrder(n.right , l);
+		}
+
+
+	}
+
+
+	private void doPreOrder (BSTNode<K,V> n, List <Entry<K,V> > l){
+
+		l.add(new Entry<K,V>(n.key , n.value));
+
+		if (n.left != null) {
+			doPreOrder(n.left , l);
+		}
+
+		if (n.right != null) {
+			doPreOrder(n.right , l);
+		}
+
+	}
+
+	private void doPostOrder (BSTNode<K,V> n, List <Entry<K,V> > l){
+
+		if (n.left != null) {
+			doPostOrder(n.left , l);
+		}
+
+		if (n.right != null) {
+			doPostOrder(n.right , l);
+		}
+
+		l.add(new Entry<K,V>(n.key , n.value));
 	}
 
 	//
 	// Purpose:
 	//
 	// Return a list of all the key/value Entrys stored in the tree
-	// The list will be constructed by performing a traversal 
+	// The list will be constructed by performing a traversal
 	// specified by the parameter which.
 	//
 	// If which is:
@@ -160,6 +312,18 @@ class BinarySearchTree <K extends Comparable<K>, V>  {
 	//
 	public List<Entry<K,V> > entryList (int which) {
 		List<Entry<K,V> > l = new LinkedList<Entry<K,V> >();
+
+		if (which == 1) {
+			doPreOrder(root , l);
+		}
+
+		if (which == 2) {
+			doPostOrder(root , l);
+		}
+
+		if (which == 3) {
+			doInOrder(root , l);
+		}
 
 		return l;
 	}
