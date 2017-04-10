@@ -37,6 +37,13 @@ MIDTERM 1  ******
   we say f(n) is O(g(n)) if there is a real constant C and an integer
   n0 > 1 such that f(n) < Cg(n) , n>=n0
 
+  Sorting Algorithms
+  Selection Sort
+  Merge Sort
+  Tree Sort
+    -insert into BST
+    -in order traversal
+
   Hashing functions
 
   integers must be small with respect to the size of keys
