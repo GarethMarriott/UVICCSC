@@ -1,0 +1,43 @@
+
+
+
+
+public class sudokuSolver{
+	
+
+	int[][] b = new int[9][9];
+
+
+	public sudokuSolver(){
+
+	}
+
+	public void importSudoku(String s){
+		for (int i = 0; i<b.length; i++) {
+			for (int j = 0; j < b.length; j++) {
+
+				int temp = Integer.parseInt(s.substring(0,1));
+				s = s.substring(1);
+				b[i][j] = temp;
+			}
+			
+		}
+		
+	}
+
+	public void show(){
+		for (int i = 0; i<b.length; i++) {
+			for (int j = 0; j < b.length; j++) {
+				System.out.print(int[i][j]);
+			}
+			System.out.println();
+		}
+	}
+
+	public static void main(String[] args) {
+		String s = "123456789123456789123456789123456789123456789123456789123456789123456789123456789"
+		sudokuSolver ss = new sudokuSolver();
+		ss.importSudoku(s);
+		ss.show();
+	}
+}
