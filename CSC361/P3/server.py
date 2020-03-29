@@ -35,7 +35,7 @@ def decode_header(header):
     return {'get':get,'syn':syn,'ack':ack,'fin':fin,'data':data,'seq_number':seq_number,'ack_number':ack_number,'payload_size':payload_size}
 
 
-localIP     = "127.0.0.1"
+localIP     = "10.0.0.1"
 localPort   = 20001
 bufferSize  = 2048
 time        = 0
@@ -78,16 +78,21 @@ while(True):
 
         if header['syn']:
             msgFromServer       = encode_header(["syn","ack"],0,0,0)
+            print("to client -> " + msgFromServer)
             bytesToSend         = str.encode(msgFromServer)
             UDPServerSocket.sendto(bytesToSend, address)
             UDPServerSocket.settimeout(1)
         elif header['get']:
             msgFromServer       = encode_header(["ack"],0,0,0)
+            print("to client -> " + msgFromServer)
             bytesToSend         = str.encode(msgFromServer)
             UDPServerSocket.sendto(bytesToSend, address)
             UDPServerSocket.settimeout(1)
+        elif header['ack']:
+            UDPServerSocket.settimeout(None)
         else:
             msgFromServer       = encode_header(["ack"],header['seq_number'],header['ack_number'],0)
+            print("to client -> " + msgFromServer)
             bytesToSend         = str.encode(msgFromServer)
             UDPServerSocket.sendto(bytesToSend, address)
     except Exception as e:
