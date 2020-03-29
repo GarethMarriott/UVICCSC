@@ -36,7 +36,7 @@ def decode_header(header):
 
 
 
-serverAddressPort   = ("127.0.0.1", 20001)
+serverAddressPort   = ("10.0.0.1", 20001)
 
 bufferSize          = 2048
 
