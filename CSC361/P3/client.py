@@ -2,6 +2,8 @@
 
 
 import socket
+import time
+import sys
 
 
 def encode_header(pkt_type, seq_number, ack_number, payload_size):
@@ -19,14 +21,14 @@ def encode_header(pkt_type, seq_number, ack_number, payload_size):
     byte_pkt_type = byte_pkt_type << 1
     byte_pkt_type = byte_pkt_type + 1  if "data" in pkt_type else byte_pkt_type
 
-    return "{:08b}".format(byte_pkt_type) + "{:016b}".format(seq_number) + "{:016b}".format(ack_number) + "{:016b}".format(payload_size)
+    return "{:08b}".format(byte_pkt_type) + "{:032b}".format(seq_number) + "{:032b}".format(ack_number) + "{:016b}".format(payload_size)
 
 
 def decode_header(header):
     byte_pkt_type = header[0:8]
-    seq_number    = header[8:24]
-    ack_number    = header[24:40]
-    payload_size  = header[40:56]
+    seq_number    = header[8:40]
+    ack_number    = header[40:72]
+    payload_size  = header[72:88]
     get  = True if byte_pkt_type[3] == '1' else False
     syn  = True if byte_pkt_type[4] == '1' else False
     ack  = True if byte_pkt_type[5] == '1' else False
@@ -36,17 +38,15 @@ def decode_header(header):
 
 
 
-serverAddressPort   = ("10.0.0.1", 20001)
+serverAddressPort        = ("127.0.0.1", 20001)
+bufferSize               = 2048
+next_sequence_number     = 0
+requested_file           = sys.argv[1]
 
-bufferSize          = 2048
-
-
+outfile = open('out.html','w')
 
 # Create a UDP socket at client side
-
 UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-
-
 
 # Send to server using created UDP socket
 payload = ""
@@ -64,22 +64,54 @@ while True:
         address_ip    = address[0]
         address_port  = address[1]
 
-        header  = decode_header(message[0:56])
-        payload = message[56:]
-        print("\n------C------")
+        header  = decode_header(message[0:88])
+        payload = message[88:]
+        print("\n-----Messaged-----")
         print("Header: " + str(header))
-        print("Message: " + payload)
-        print("------------\n")
+        # print("Message: " + payload)
+        print("-----Recieved-----\n")
+
         if header['syn'] and header['ack']:
-            msgFromClient = encode_header(["ack"],0,0,0)
+            msgFromClient = encode_header(['ack','syn'],0,0,0)
             bytesToSend = str.encode(msgFromClient)
             UDPClientSocket.sendto(bytesToSend, address)
+            msgFromClient = encode_header(["get"],0,0,0)
+            bytesToSend = str.encode(msgFromClient + requested_file)
+            print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
+            UDPClientSocket.sendto(bytesToSend, address)
             UDPClientSocket.settimeout(1)
+            time.sleep(.1)
+        elif header['fin']:
+            msgFromClient = encode_header(['ack','fin'],0,0,0)
+            bytesToSend = str.encode(msgFromClient)
+            print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
+            UDPClientSocket.sendto(bytesToSend, address)
+            UDPClientSocket.close()
+            outfile.write('\n')
+            outfile.close()
+            print("---------\nfin\n---------")
+            break
+        elif header['data']:
+            raw_payload = "%r"%payload
+            outfile.write(raw_payload)
+            msgFromClient = encode_header(['ack'],0,int(header['seq_number'],2)+int(header['payload_size'],2),0)
+            bytesToSend = str.encode(msgFromClient)
+            print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
+            UDPClientSocket.sendto(bytesToSend, address)
+            UDPClientSocket.settimeout(1)
+            time.sleep(.1)
+        elif header['ack']:
+            UDPClientSocket.settimeout(None)
+            time.sleep(.1)
         else:
-            pass
+             UDPClientSocket.settimeout(None)
+             time.sleep(.1)
 
 
     except Exception as e:
+        print(type(e))
         print("Timeout attemping retransmit")
         bytesToSend = str.encode(msgFromClient)
         UDPClientSocket.sendto(bytesToSend, serverAddressPort)
+        UDPClientSocket.settimeout(1)
+        time.sleep(.1)
