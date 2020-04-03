@@ -1,5 +1,8 @@
 # Code started from: https://pythontic.com/modules/socket/udp-client-server-example
 
+# Gareth Marriott
+# V00875748
+# gpmarriott3@gmail.com
 
 import socket
 import time
