@@ -105,6 +105,7 @@ while True:
             outfile.write(payload)
             msgFromClient = encode_header(['ack'],0,int(header['seq_number'],2)+int(header['payload_size'],2),0)
             bytesToSend = str.encode(msgFromClient)
+            print("Number of bytes recieved -> " + str(int(header['seq_number'],2)) + "\r", end = '')
             # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
             UDPClientSocket.sendto(bytesToSend, address)
             UDPClientSocket.settimeout(1)
@@ -117,8 +118,8 @@ while True:
              time.sleep(.1)
 
     except Exception as e:
-        print(type(e))
-        print("Timeout attemping retransmit")
+        # print(type(e))
+        print("Timeout attemping retransmit\r" end = '')
         bytesToSend = str.encode(msgFromClient)
         UDPClientSocket.sendto(bytesToSend, serverAddressPort)
         UDPClientSocket.settimeout(1)
