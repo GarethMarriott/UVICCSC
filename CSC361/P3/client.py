@@ -102,14 +102,23 @@ while True:
             # print("---------\nfin\n---------")
             break
         elif header['data']:
-            outfile.write(payload)
-            msgFromClient = encode_header(['ack'],0,int(header['seq_number'],2)+int(header['payload_size'],2),0)
-            bytesToSend = str.encode(msgFromClient)
-            print("Number of bytes recieved -> " + str(int(header['seq_number'],2)) + "\r", end = '')
-            # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
-            UDPClientSocket.sendto(bytesToSend, address)
-            UDPClientSocket.settimeout(1)
-            time.sleep(.1)
+            if int(header['seq_number'],2) > next_sequence_number:
+                outfile.write(payload)
+                msgFromClient = encode_header(['ack'],0,int(header['seq_number'],2)+int(header['payload_size'],2),0)
+                bytesToSend = str.encode(msgFromClient)
+                print("Number of bytes recieved -> " + str(int(header['seq_number'],2)) + "\r", end = '')
+                # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
+                UDPClientSocket.sendto(bytesToSend, address)
+                UDPClientSocket.settimeout(1)
+                time.sleep(.1)
+            else:
+                msgFromClient = encode_header(['ack'],0,int(header['seq_number'],2)+int(header['payload_size'],2),0)
+                bytesToSend = str.encode(msgFromClient)
+                print("DUPLICATE BYTES RECIEVED -> " + str(int(header['seq_number'],2)) + "\r", end = '')
+                # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
+                UDPClientSocket.sendto(bytesToSend, address)
+                UDPClientSocket.settimeout(1)
+                time.sleep(.1)
         elif header['ack']:
             UDPClientSocket.settimeout(None)
             time.sleep(.1)
