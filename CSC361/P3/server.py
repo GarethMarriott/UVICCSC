@@ -102,7 +102,7 @@ while(True):
             bytesToSend         = str.encode(msgFromServer)
             UDPServerSocket.sendto(bytesToSend, address)
             UDPServerSocket.settimeout(1)
-            # time.sleep(.1)
+            time.sleep(.1)
         elif header['get']:
             FILE_NAME = payload
             print("File requested -> " + FILE_NAME)
@@ -116,7 +116,7 @@ while(True):
             bytesToSend         = str.encode(msgFromServer + payload_to_client)
             UDPServerSocket.sendto(bytesToSend, address)
             UDPServerSocket.settimeout(1)
-            # time.sleep(.1)
+            time.sleep(.1)
         elif header['fin']:
             print("File transfer compleate awaiting next connection\n")
             FILE.close()
@@ -133,13 +133,14 @@ while(True):
                 bytesToSend         = str.encode(msgFromServer)
                 UDPServerSocket.sendto(bytesToSend, address)
                 UDPServerSocket.settimeout(1)
+                time.sleep(.1)
             else:
                 msgFromServer       = encode_header(['data'],int(header['ack_number'],2),int(header['seq_number'],2),len(payload_to_client))
                 # print("to client after not end of file-> " + str(decode_header(str.encode(msgFromServer))))
                 bytesToSend         = str.encode(msgFromServer + payload_to_client)
                 UDPServerSocket.sendto(bytesToSend, address)
                 UDPServerSocket.settimeout(1)
-                # time.sleep(.1)
+                time.sleep(.1)
         else:
             pass
     except socket.timeout as e:
