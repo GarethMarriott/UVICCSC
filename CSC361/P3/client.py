@@ -128,7 +128,8 @@ while True:
 
     except Exception as e:
         # print(type(e))
-        print("Timeout attemping retransmit\r" end = '')
+        print()
+        print("\rTimeout attemping retransmit")
         bytesToSend = str.encode(msgFromClient)
         UDPClientSocket.sendto(bytesToSend, serverAddressPort)
         UDPClientSocket.settimeout(1)
