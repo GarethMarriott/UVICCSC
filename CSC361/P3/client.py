@@ -105,7 +105,7 @@ while True:
             if int(header['seq_number'],2) < next_sequence_number:
                 msgFromClient = encode_header(['ack'],0,next_sequence_number,0)
                 bytesToSend = str.encode(msgFromClient)
-                print("Number of bytes recieved -> " + str(int(header['seq_number'],2)) + "\r", end = '')
+                print("DUPLICATE BYTES RECIEVED -> " + str(int(header['seq_number'],2)) + "\r", end = '')
                 # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
                 UDPClientSocket.sendto(bytesToSend, address)
                 UDPClientSocket.settimeout(1)
@@ -115,7 +115,7 @@ while True:
                 next_sequence_number = int(header['seq_number'],2)+int(header['payload_size'],2)
                 msgFromClient = encode_header(['ack'],0,int(header['seq_number'],2)+int(header['payload_size'],2),0)
                 bytesToSend = str.encode(msgFromClient)
-                print("DUPLICATE BYTES RECIEVED -> " + str(int(header['seq_number'],2)) + "\r", end = '')
+                print("Number of bytes recieved ->" + str(int(header['seq_number'],2)) + "\r", end = '')
                 # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
                 UDPClientSocket.sendto(bytesToSend, address)
                 UDPClientSocket.settimeout(1)
