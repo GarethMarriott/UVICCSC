@@ -21,6 +21,7 @@ def encode_header(pkt_type, seq_number, ack_number, payload_size):
     byte_pkt_type = byte_pkt_type << 1
     byte_pkt_type = byte_pkt_type + 1  if "data" in pkt_type else byte_pkt_type
 
+    # print("{:08b}".format(byte_pkt_type) + "{:032b}".format(seq_number) + "{:032b}".format(ack_number) + "{:016b}".format(payload_size))
     return "{:08b}".format(byte_pkt_type) + "{:032b}".format(seq_number) + "{:032b}".format(ack_number) + "{:016b}".format(payload_size)
 
 
@@ -38,12 +39,13 @@ def decode_header(header):
 
 
 
-serverAddressPort        = ("127.0.0.1", 20001)
-bufferSize               = 2048
+serverAddressPort        = (sys.argv[1], int(sys.argv[2]))
+bufferSize               = 1024
 next_sequence_number     = 0
-requested_file           = sys.argv[1]
+requested_file           = sys.argv[3]
+# print(requested_file)
 
-outfile = open('out.html','w')
+outfile = open(sys.argv[4],'w')
 
 # Create a UDP socket at client side
 UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
@@ -66,47 +68,50 @@ while True:
 
         header  = decode_header(message[0:88])
         payload = message[88:]
-        print("\n-----Messaged-----")
-        print("Header: " + str(header))
-        # print("Message: " + payload)
-        print("-----Recieved-----\n")
+        # print("\n-----Messaged-----")
+        # print("Header: " + str(header))
+        # print("header claimed payload size BYTES: " + str(header['payload_size']))
+        # print("header claimed payload size: " + str(int(header['payload_size'] , 2)))
+        # print("message len: " + str(len(payload)))
+        # print("Message: " + repr(payload))
+        # print("-----Recieved-----\n")
 
         if header['syn'] and header['ack']:
             msgFromClient = encode_header(['ack','syn'],0,0,0)
             bytesToSend = str.encode(msgFromClient)
             UDPClientSocket.sendto(bytesToSend, address)
+            print("connection established")
             msgFromClient = encode_header(["get"],0,0,0)
             bytesToSend = str.encode(msgFromClient + requested_file)
-            print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
+            # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
             UDPClientSocket.sendto(bytesToSend, address)
+            print("File requested -> "+requested_file)
             UDPClientSocket.settimeout(1)
-            time.sleep(.1)
+            # time.sleep(.1)
         elif header['fin']:
             msgFromClient = encode_header(['ack','fin'],0,0,0)
             bytesToSend = str.encode(msgFromClient)
-            print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
+            # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
             UDPClientSocket.sendto(bytesToSend, address)
             UDPClientSocket.close()
-            outfile.write('\n')
             outfile.close()
-            print("---------\nfin\n---------")
+            print("File transfer compleate\n")
+            # print("---------\nfin\n---------")
             break
         elif header['data']:
-            raw_payload = "%r"%payload
-            outfile.write(raw_payload)
+            outfile.write(payload)
             msgFromClient = encode_header(['ack'],0,int(header['seq_number'],2)+int(header['payload_size'],2),0)
             bytesToSend = str.encode(msgFromClient)
-            print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
+            # print("-----Message-----\n"+str(decode_header(msgFromClient))+"\n-----Sent-----")
             UDPClientSocket.sendto(bytesToSend, address)
             UDPClientSocket.settimeout(1)
-            time.sleep(.1)
+            # time.sleep(.1)
         elif header['ack']:
             UDPClientSocket.settimeout(None)
-            time.sleep(.1)
+            # time.sleep(.1)
         else:
              UDPClientSocket.settimeout(None)
-             time.sleep(.1)
-
+             # time.sleep(.1)
 
     except Exception as e:
         print(type(e))
@@ -114,4 +119,4 @@ while True:
         bytesToSend = str.encode(msgFromClient)
         UDPClientSocket.sendto(bytesToSend, serverAddressPort)
         UDPClientSocket.settimeout(1)
-        time.sleep(.1)
+        # time.sleep(.1)
